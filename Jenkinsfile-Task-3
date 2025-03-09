@@ -25,7 +25,11 @@ pipeline {
                 sshagent(['agent1']) {
                     sh """
                         scp -o StrictHostKeyChecking=no target/${BUILD_ARTIFACT} ubuntu@13.127.185.167:${TOMCAT_WEBAPPS}/
-                        ssh ubuntu@13.127.185.167 "sudo systemctl restart tomcat9"
+                        ssh ubuntu@13.127.185.167 "
+                            sudo /opt/tomcat9/bin/shutdown.sh;
+                            sleep 5;
+                            sudo /opt/tomcat9/bin/startup.sh
+                        "
                     """
                 }
             }
